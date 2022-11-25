@@ -7,4 +7,13 @@ terraform {
       version = "= 4.41.0"
     }
   }
+  
+  backend "remote" {
+    hostname = "app.terraform.io"
+    organization = "findprofessional"
+
+    workspaces {
+      name = "dev"
+    }
+  }
 }

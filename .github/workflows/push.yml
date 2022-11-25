@@ -20,5 +20,8 @@ jobs:
           unzip /tmp/terraform.zip
           chmod +x terraform && mv terraform /usr/local/bin/
 
+      - name: terraform cloud credential
+        run: base64 --decode <<< ${{ secrets.TERRAFORM_CLOUD_CREDENTIAL }} > ~/.terraformrc
+
       - run: terraform init
       # - run: terraform apply

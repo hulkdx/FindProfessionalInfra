@@ -1,6 +1,5 @@
 # Infra codes
 
-TODO: setup CI
 TODO: state management 
 
 Install terraform:
