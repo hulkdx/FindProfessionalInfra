@@ -23,5 +23,11 @@ jobs:
       - name: terraform cloud credential
         run: base64 --decode <<< ${{ secrets.TERRAFORM_CLOUD_CREDENTIAL }} > ~/.terraformrc
 
+      - name: aws credential
+        run: |
+          mkdir ~/.aws
+          base64 --decode <<< ${{ secrets.AWS_CRED }} > ~/.aws/credentials
+          base64 --decode <<< ${{ secrets.AWS_CONFIG }} > ~/.aws/config
+
       - run: terraform init
       - run: terraform plan
