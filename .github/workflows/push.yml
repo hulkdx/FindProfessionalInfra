@@ -30,4 +30,4 @@ jobs:
           base64 --decode <<< ${{ secrets.AWS_CONFIG }} > ~/.aws/config
 
       - run: terraform init
-      - run: terraform plan
+      # - run: terraform apply -auto-approve
