@@ -10,7 +10,7 @@ resource "aws_subnet" "public_subnet_1" {
   cidr_block              = "10.0.64.0/19"
   availability_zone       = "${data.aws_region.current.name}a"
   map_public_ip_on_launch = true
-  tags                    = {
+  tags = {
     "kubernetes.io/role/elb" = "1"
   }
 }
@@ -20,7 +20,7 @@ resource "aws_subnet" "public_subnet_2" {
   cidr_block              = "10.0.96.0/19"
   availability_zone       = "${data.aws_region.current.name}b"
   map_public_ip_on_launch = true
-  tags                    = {
+  tags = {
     "kubernetes.io/role/elb" = "1"
   }
 }
