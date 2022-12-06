@@ -1,5 +1,12 @@
 data "aws_region" "current" {}
 
+locals {
+  public_subnet_ids = [
+    aws_subnet.public_subnet_1.id,
+    aws_subnet.public_subnet_2.id,
+  ]
+}
+
 resource "aws_vpc" "main_vpc" {
   cidr_block           = "10.0.0.0/16"
   enable_dns_hostnames = "true"
