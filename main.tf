@@ -12,7 +12,7 @@
 #    node_role_arn  = aws_iam_role.eks_node_group_role.arn
 #    subnet_ids     = local.public_subnet_ids
 #    capacity_type  = "ON_DEMAND"
-#    instance_types = ["t3.micro"]
+#    instance_types = ["t3.small"]
 #    scaling_config {
 #      desired_size = 1
 #      max_size     = 1
