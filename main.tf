@@ -6,7 +6,7 @@
 #    }
 #    depends_on = [aws_iam_role_policy_attachment.eks_policy_AmazonEKSClusterPolicy]
 #  }
-
+#
 #  resource "aws_eks_node_group" "main_eks_node_group" {
 #    cluster_name   = aws_eks_cluster.main_eks.name
 #    node_role_arn  = aws_iam_role.eks_node_group_role.arn
@@ -31,7 +31,7 @@
 #      aws_iam_role_policy_attachment.eks_node_policy_AmazonEKS_CNI_Policy,
 #    ]
 #  }
-
+#
 #  resource "aws_security_group" "node_group" {
 #    vpc_id = aws_vpc.main_vpc.id
 #    ingress {
@@ -41,20 +41,22 @@
 #      cidr_blocks = ["0.0.0.0/0"]
 #    }
 #  }
-
+#
 #  resource "aws_launch_template" "node_group" {
 #    vpc_security_group_ids = [
 #      aws_eks_cluster.main_eks.vpc_config[0].cluster_security_group_id,
 #      aws_security_group.node_group.id,
 #    ]
 #    metadata_options {
-#      http_put_response_hop_limit = 2
+#      http_put_response_hop_limit = 1
 #      http_tokens                 = "required"
+#      http_endpoint            = "enabled"
+#      instance_metadata_tags      = "disabled"
 #    }
 #    user_data  = data.cloudinit_config.node_group.rendered
 #    depends_on = [aws_eks_addon.vpc_cni]
 #  }
-
+#
 #  data "cloudinit_config" "node_group" {
 #    base64_encode = true
 #    gzip          = false
@@ -64,7 +66,7 @@
 #      content      = local.increase_max_pods_script
 #    }
 #  }
-
+#
 #  # -------------------------------------------------------------------------------------
 #  # Increase max pods
 #  #	https://aws.amazon.com/blogs/containers/amazon-vpc-cni-increases-pods-per-node-limits/
