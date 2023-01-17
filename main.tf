@@ -70,7 +70,7 @@
 #  # -------------------------------------------------------------------------------------
 #  # Increase max pods
 #  #	https://aws.amazon.com/blogs/containers/amazon-vpc-cni-increases-pods-per-node-limits/
-#  # https://docs.aws.amazon.com/eks/latest/userguide/cni-increase-ip-addresses.html
+#  #  https://docs.aws.amazon.com/eks/latest/userguide/cni-increase-ip-addresses.html
 #  # -------------------------------------------------------------------------------------
 #  locals {
 #    # t3.micro
