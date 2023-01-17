@@ -6,6 +6,11 @@ FindProfessional services currently using EKS with single node
 ## Deploy
 Currently ci is disabled to apply terraform, enable it by uncomment [this line](.github/workflows/push.yml#L33)
 
+## aws_launch_template
+Used for:
+- Setting security_group for nodes
+- Increasing max pods for each nodes
+
 ## TODO
 - kubernetes version
 - latest ami node group
@@ -16,6 +21,7 @@ Currently ci is disabled to apply terraform, enable it by uncomment [this line](
 - autoscaller
 - tls
 
+# Useful tools
 ## Infracost
 [infracost](https://www.infracost.io/) can be used to see the cost of terraform resources:
 ```sh
