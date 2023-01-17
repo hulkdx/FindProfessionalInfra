@@ -1,4 +1,4 @@
-![Build](https://img.shields.io/github/workflow/status/hulkdx/findprofessional-infra/Deploy%20to%20AWS?style=for-the-badge)
+![Build]([https://img.shields.io/github/workflow/status/hulkdx/findprofessional-infra/Deploy%20to%20AWS?style=for-the-badge](https://img.shields.io/github/actions/workflow/status/hulkdx/findprofessional-infra/push.yml?style=for-the-badge))
 
 # FindProfessional Infrastructure
 FindProfessional services currently using EKS with single node
