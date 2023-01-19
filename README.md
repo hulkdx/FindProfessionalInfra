@@ -22,6 +22,9 @@ Used for:
 - tls
 
 # Useful tools
+## Terraform cloud
+[Terraform cloud](app.terraform.io) is used as the backend of this project
+
 ## Infracost
 [infracost](https://www.infracost.io/) can be used to see the cost of terraform resources:
 ```sh
