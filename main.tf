@@ -47,73 +47,33 @@
 #     aws_eks_cluster.main_eks.vpc_config[0].cluster_security_group_id,
 #     aws_security_group.node_group.id,
 #   ]
-#   metadata_options {
-#     http_put_response_hop_limit = 1
-#     http_tokens                 = "required"
-#     http_endpoint               = "enabled"
-#     instance_metadata_tags      = "disabled"
-#   }
-#   user_data  = data.cloudinit_config.node_group.rendered
-#   depends_on = [aws_eks_addon.vpc_cni]
 # }
 
-# data "cloudinit_config" "node_group" {
-#   base64_encode = true
-#   gzip          = false
-#   boundary      = "//"
-#   part {
-#     content_type = "text/x-shellscript"
-#     content      = local.increase_max_pods_script
-#   }
-# }
-
-# # -------------------------------------------------------------------------------------
-# # Increase max pods
-# #	https://aws.amazon.com/blogs/containers/amazon-vpc-cni-increases-pods-per-node-limits/
-# # https://docs.aws.amazon.com/eks/latest/userguide/cni-increase-ip-addresses.html
-# # 
-# # Max pods list:
-# # https://github.com/awslabs/amazon-eks-ami/blob/master/files/eni-max-pods.txt
-# # -------------------------------------------------------------------------------------
-# locals {
-#   max_pods = "32"
-# }
-# # step 1
-# resource "null_resource" "kubectl_set_env" {
-#   triggers = {
-#     once = true
-#   }
-#   provisioner "local-exec" {
-#     interpreter = ["/bin/bash", "-c"]
-#     command     = <<-EOT
-#        aws eks update-kubeconfig --name ${aws_eks_cluster.main_eks.name}
-#        kubectl set env daemonset aws-node -n kube-system ENABLE_PREFIX_DELEGATION=true
-#      EOT
-#   }
-# }
-# # step 2
 # resource "aws_eks_addon" "vpc_cni" {
 #   cluster_name             = aws_eks_cluster.main_eks.name
 #   addon_name               = "vpc-cni"
 #   resolve_conflicts        = "OVERWRITE"
 #   addon_version            = data.aws_eks_addon_version.latest.version
 #   service_account_role_arn = aws_iam_role.oidc.arn
-#   depends_on               = [null_resource.kubectl_set_env]
+#   configuration_values     = jsonencode({
+#     env = {
+#       # Reference docs https://docs.aws.amazon.com/eks/latest/userguide/cni-increase-ip-addresses.html
+#       ENABLE_PREFIX_DELEGATION = "true"
+#       WARM_PREFIX_TARGET       = "1"
+#     }
+#   })
 # }
 # data "aws_eks_addon_version" "latest" {
 #   addon_name         = "vpc-cni"
 #   kubernetes_version = aws_eks_cluster.main_eks.version
 #   most_recent        = true
 # }
-# # step 3
-# locals {
-#   increase_max_pods_script = <<-EOF
-#      !/bin/bash
-#      set -o xtrace
-#      /etc/eks/bootstrap.sh ${var.cluster_name} \
-#        --b64-cluster-ca ${aws_eks_cluster.main_eks.certificate_authority[0].data}
-#        --apiserver-endpoint ${aws_eks_cluster.main_eks.endpoint}
-#        --use-max-pods false \
-#        --kubelet-extra-args '--max-pods=34'
-#    EOF
+#
+# resource "aws_eks_addon" "coredns" {
+#   cluster_name             = aws_eks_cluster.main_eks.name
+#   addon_name               = "coredns"
+# }
+# resource "aws_eks_addon" "kube-proxy" {
+#   cluster_name             = aws_eks_cluster.main_eks.name
+#   addon_name               = "kube-proxy"
 # }
