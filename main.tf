@@ -53,7 +53,7 @@
 #   cluster_name             = aws_eks_cluster.main_eks.name
 #   addon_name               = "vpc-cni"
 #   resolve_conflicts        = "OVERWRITE"
-#   addon_version            = data.aws_eks_addon_version.latest.version
+#   addon_version            = data.aws_eks_addon_version.latest["vpc-cni"].version
 #   service_account_role_arn = aws_iam_role.oidc.arn
 #   configuration_values     = jsonencode({
 #     env = {
@@ -63,8 +63,11 @@
 #     }
 #   })
 # }
+#
 # data "aws_eks_addon_version" "latest" {
-#    addon_name         = "vpc-cni"
+#    for_each = toset([ "vpc-cni", "coredns", "kube-proxy" ])
+#
+#    addon_name         = each.key
 #    kubernetes_version = aws_eks_cluster.main_eks.version
 #    most_recent        = true
 # }
@@ -72,9 +75,12 @@
 # resource "aws_eks_addon" "coredns" {
 #    cluster_name             = aws_eks_cluster.main_eks.name
 #    addon_name               = "coredns"
-#    depends_on     = [aws_eks_node_group.main_eks_node_group]
+#    addon_version            = data.aws_eks_addon_version.latest["coredns"].version
+#    depends_on               = [aws_eks_node_group.main_eks_node_group]
 # }
+#
 # resource "aws_eks_addon" "kube-proxy" {
 #    cluster_name             = aws_eks_cluster.main_eks.name
 #    addon_name               = "kube-proxy"
+#    addon_version            = data.aws_eks_addon_version.latest["kube-proxy"].version
 # }
