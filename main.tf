@@ -77,10 +77,12 @@
 #    addon_name               = "coredns"
 #    addon_version            = data.aws_eks_addon_version.latest["coredns"].version
 #    depends_on               = [aws_eks_node_group.main_eks_node_group]
+#    resolve_conflicts        = "OVERWRITE"
 # }
 #
 # resource "aws_eks_addon" "kube-proxy" {
 #    cluster_name             = aws_eks_cluster.main_eks.name
 #    addon_name               = "kube-proxy"
 #    addon_version            = data.aws_eks_addon_version.latest["kube-proxy"].version
+#    resolve_conflicts        = "OVERWRITE"
 # }
